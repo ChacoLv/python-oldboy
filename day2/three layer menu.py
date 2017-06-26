@@ -11,7 +11,7 @@ data = {
             "瓯海区":["温州大学","茶山"],
             "苍南":["金乡","灵溪"]
         },
-        "台州":{
+        "台州市":{
             "路桥":["海鲜","喷雾器"],
             "温岭":["高山","绿叶"]
         }
@@ -21,8 +21,12 @@ data = {
     }
 }
 
-exit_flag = True
 
+
+
+
+'''
+exit_flag = True
 while exit_flag:
     for i in data:
         print(i)
@@ -59,7 +63,7 @@ while exit_flag:
             else:
                 print("选择有误，重新输入！")
                 continue
-
+'''
 
 
 
