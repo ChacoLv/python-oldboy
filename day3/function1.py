@@ -20,7 +20,7 @@ def func2():
     """function 2"""
     print("this is function2")
     logger()
-    return 1,{"name":"lvcheng","age":"18"}      #可返回多个值
+    return 1,{"name":"lvcheng","age":"18"}      #可返回多个值,多个值则是元组
 
 x = func1()             #调用函数
 y = func2()

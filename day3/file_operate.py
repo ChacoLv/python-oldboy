@@ -26,7 +26,7 @@ f.seek(30)
 print(f.tell())
 f.write("************")
 
-f = open("lyrics","a+",encoding="utf-8")    #追加读写，原本a是只可追加，不可读，现是可读写的,读默认是在末尾，如果需要从头读，则需要seek(0a)
+f = open("lyrics","a+",encoding="utf-8")    #追加读写，原本a是只可追加，不可读，现是可读写的,读默认是在末尾，如果需要从头读，则需要seek(0)
 for line in f:
     print(line)
 
