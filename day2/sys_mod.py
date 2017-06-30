@@ -3,7 +3,7 @@
 #sys模块
 
 import sys
-print(sys.path)     #打印环境变量
+#print(sys.path)     #打印环境变量
 print(sys.argv)     #打印相对路径,在python命令下执行
 
 

@@ -11,6 +11,7 @@ print(msg.encode(encoding="utf-8").decode(encoding="utf-8"))
 #列表复制：
 
 name = ["lc","pxm",["alex","jack"],"pt"]
+print(enumerate(name))
 name2 = name.copy()                       #列表复制，复制为浅copy，不会复制列表内的列表
 print(name)
 print(name2)
