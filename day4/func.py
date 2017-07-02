@@ -5,7 +5,7 @@
 # 高阶函数
 #     a.把一个函数名当做实参传给另一个函数(在不修改被装饰函数的源代码的情况下，为其添加功能)
 #     b.返回值中包含函数名（不修改函数的调用方式）
-
+'''
 import  time
 def bar():
     print("in the bar!")
@@ -70,12 +70,21 @@ def home():
     print("home page")
 
 home()
+'''
+#匿名函数
 
+calc = lambda a,b :a+b
+print(calc(1,2))
 
+calc = lambda n : 3 if n<5 else n*n
+print(calc(12))
 
+res = filter(lambda n:n>5,range(10))
+res = map(lambda n:n*n,range(5))
+for i in res:
+    print('----',i)
 
-
-
+res = [lambda i:i*2 for i in range(10)]
 
 
 

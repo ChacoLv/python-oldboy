@@ -37,7 +37,7 @@ def delete(string):
         print("The Domain not in this file!")
 
 def add(string):                                    #增加ha文件配置服务器信息
-    dict = eval(string)
+    dict = eval(string)                     #将字符串转换成字典
     backend = dict["backend"]
     record = dict["record"]
     with open("haproxyfile","a") as f_write:
