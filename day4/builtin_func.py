@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 # LC
-'''
 print(all([1,2,3,0,4]))     #all中的课迭代对象全为真则返回真
 print(any([1,2,3,0]))       #any中有一个为真则返回真
 print(bin(101))             #把数字转换成2进制
@@ -101,6 +100,69 @@ def hel(*args):
     return args
 for i in map(hel,a,b):
     print(i)
-'''
-__import__("decorate")
+
+#json序列化               #json能够将内存中的熟悉序列化值硬盘文件中，json只能序列号简单的，如列表，元组，字典等，函数不行
+import  json
+info = {
+    'name':'lc',
+    'age':19
+}
+f = open("test.txt",'w')
+f.write(json.dumps(info))
+f.close()
+
+#json反序列化               #json返序列化能够将文件中的数据加载至内存中，保持原格式
+f = open("test.txt","r")
+data = json.loads(f.read())     #通过loads来实现
+print(data["age"])              #可以直接读取
+f.close()
+
+#pickle序列化              #pickle能够序列化复杂的对象类型，如函数，pickle仅在python中有效，json是在各种语言中都有效
+import pickle
+import json
+def hello(name):
+    print("hello,",name)
+info = {
+    'name':'lc',
+    'age':'19',
+    'func':hello                    #函数
+}
+f = open("test.txt","wb")               #pickle序列化需要用字节格式
+pickle.dump(info,f)              #等价于f.write(pickle.dumps(info))
+f.close()
+
+#pickle反序列化
+f = open("test.txt","rb")
+data = pickle.load(f)                                #等价于data = pickle.loads(f.read())
+print(data["func"]("lvcheng"))
+f.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
