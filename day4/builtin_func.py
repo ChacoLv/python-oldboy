@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 # LC
-
+'''
 print(all([1,2,3,0,4]))     #all中的课迭代对象全为真则返回真
 print(any([1,2,3,0]))       #any中有一个为真则返回真
 print(bin(101))             #把数字转换成2进制
@@ -63,6 +63,7 @@ print(globals())
 #hash
 
 #hex            #将数字转换成16进制
+#oct(x)         #将数字转换成8进制
 hex(152)
 
 #id             #返回内存地址
@@ -73,6 +74,33 @@ print('---',id(1))
 #max()              #找出最大的值
 #min()
 
+#pow
+print(pow(2,4,5))            #求x的y次方，然后使用z求余
 
+#round
+print(round(1.232122322,5))              #表示保留小数点后几位
 
+#sorted
+a = {5:2,8:0,1:4,-5:7,99:11}
+print(sorted(a.items()))                #将字典a变成列表，并排序，默认按着字典的key排序
+# 结果：[(-5, 7), (1, 4), (5, 2), (8, 0), (99, 11)]
+print(sorted(a.items(),key=lambda x:x[1]))      #按着字典value排序，使用lambda来指定转换后的列表中的第二个数字排序
+# 结果：[(8, 0), (5, 2), (1, 4), (-5, 7), (99, 11)]
+
+#zip                #将多个可迭代对象进行相互柔和,以最短的算
+a = (1,2,3,4,5,6,7)
+b = ('a','b','c','d','e','f')
+print(len(b))
+c = ('+' for i in range(len(b)))
+print(c)
+for i in zip(a,b,c):
+    print(i)
+
+#map                #将可迭代对象按着函数执行，即将可迭代对象的值传递给函数，并返回结果
+def hel(*args):
+    return args
+for i in map(hel,a,b):
+    print(i)
+'''
+__import__("decorate")
 
