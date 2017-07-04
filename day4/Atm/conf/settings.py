@@ -4,7 +4,7 @@ import os
 import sys
 import logging
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
+sys.path.append(BASE_DIR)
 
 DATABASE ={
     'engine':'file_storage',

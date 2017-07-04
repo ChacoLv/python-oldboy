@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 # LC
+import os
+import sys
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 username = input("please input your username:")         #输入用户名
 #检查用户名是否被锁住
 lock_read = open("lock_file.txt","r")
