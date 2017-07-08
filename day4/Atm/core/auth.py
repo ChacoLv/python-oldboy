@@ -53,7 +53,7 @@ def acc_login(user_data,log_obj):
             return auth
         retry_count +=1
     else:
-        log_obj.error("account [%s] too many login attempts"%account)
+        log_obj.error("account [%s] too many login attempts"% account)
         exit()
 
 
