@@ -31,17 +31,27 @@ def withdraw(acc_data):
     print current credit account information and withdraw the money
     '''
     account_data = accounts.load_current_balance(acc_data['account_id'])
+    old_balance = account_data['balance']
     current_balance = u'''-----balance information-----
     credit : %s
     balance:%s
-    '''%(account_data['credit'],account_data['balance'])
+    '''%(account_data['credit'],old_balance)
     exit_flag = False
     while not exit_flag:
-        withdraw_amount = input("Please input your withdraw amount:")
+        withdraw_amount = input("Please input your withdraw amount,'b' to exit:")
         if withdraw_amount.isdigit() and int(withdraw_amount)> 0:
-            new_balance = transaction.make_transaction(trans_logger,account_data,withdraw_amount,'withdraw')
+            withdraw_amount = float(withdraw_amount)
+            new_accout_data = transaction.make_transaction(trans_logger,account_data,withdraw_amount,'withdraw')
+            new_balance = new_accout_data['balance']
+            interest = old_balance -new_balance - withdraw_amount
             if new_balance:
-                print("New balance is :",new_balance)
+                withdraw_info = '''
+                --- withdraw information ---
+                withdraw amount :%s
+                balance :%s
+                interest :%s
+                '''%(new_balance,withdraw_amount,interest)
+                print(withdraw_info)
         else:
             print("Invalid withdraw account,please re-type amount!")
 
@@ -103,15 +113,13 @@ def interactive(acc_data):
         else:
             print("Invalid input,Please retry")
 
-interactive(user_data)
-
 def run():
     acc_data = auth.acc_login(user_data,access_logger)
     if user_data['is_authenticated'] == True:
         user_data['account_data'] = acc_data
         interactive(user_data)
 
-
+run()
 
 
 

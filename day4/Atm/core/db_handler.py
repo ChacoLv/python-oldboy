@@ -13,9 +13,8 @@ def file_db_handle(conn_params):
     :param conn_params:
     :return:
     '''
-    print("file db:",conn_params)
     db_path = "%s/%s"%(conn_params["path"],conn_params['name'])
-    return file_execute
+    return db_path
 
 def db_handler():
     '''
@@ -30,7 +29,7 @@ def db_handler():
 
 def file_execute(sql,**kwargs):
     conn_params = settings.DATABASE
-    db_path = '%s/%s'%(conn_params['path'],conn_params['name'])
+    db_path = '%s\\%s'%(conn_params['path'],conn_params['name'])
 
     sql_list = sql.split('where')
     if sql_list[0].startswith("select") and len(sql_list) > 1:
