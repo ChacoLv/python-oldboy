@@ -41,8 +41,8 @@ def withdraw(acc_data):
         withdraw_amount = input("Please input your withdraw amount,'b' to exit:")
         if withdraw_amount.isdigit() and int(withdraw_amount)> 0:
             withdraw_amount = float(withdraw_amount)
-            new_account_data = transaction.make_transaction(trans_logger,account_data,withdraw_amount,'withdraw')
-
+            new_account_data = transaction.make_transaction(account_data,withdraw_amount,'withdraw')
+            logger.trans_logger(account_data,'withdraw',withdraw_amount)
             new_balance = new_account_data['balance']
             interest = old_balance -new_balance - withdraw_amount
             if new_balance:
@@ -59,13 +59,35 @@ def withdraw(acc_data):
         if withdraw_amount == 'b':
             exit_flag = True
 
-
-
-
-
-
+@login_required
 def transfer(acc_data):
-    pass
+    '''
+    transfer money to others,and log the information in transaction log
+    :param acc_data:
+    :return:
+    '''
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    old_balance = account_data['balance']
+    current_balance = u'''-----balance information-----
+    credit : %s
+    balance:%s
+    '''%(account_data['credit'],old_balance)
+    exit_flag = False
+    while not exit_flag:
+        payee_id = input("Please input payee account id:")
+        re_payee_id = input("Please input payee account id again:")
+        if payee_id == re_payee_id:
+            payee_data = accounts.load_current_balance(payee_id)
+            trans_amount = input("Please input transfer amount:")
+            trans_amount = float(trans_amount)
+            new_account_data = transaction.make_transaction(account_data,trans_amount, 'transfer')
+            logger.trans_logger(account_data, 'transfer', trans_amount,payee_id)
+            new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')
+            logger.trans_logger(payee_data, 'repay', trans_amount)
+        else:
+            print("payee_id is invalid,retry!!!")
+
+
 
 def repay(acc_data):
     pass

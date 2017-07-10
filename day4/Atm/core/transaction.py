@@ -10,7 +10,7 @@ from core import accounts
 from core import logger
 from conf import settings
 
-def make_transaction(trans_log,acc_data,amount,trans_type,**kwargs):
+def make_transaction(acc_data,amount,trans_type,**kwargs):
     '''
     Do transaction,include repay,withdraw,transfer,shopping bill,all in one
     :return: new user data
@@ -26,7 +26,6 @@ def make_transaction(trans_log,acc_data,amount,trans_type,**kwargs):
                 print('Your balance is not enough,current balance is %s'%acc_data['balance'])
                 return
         acc_data['balance'] = new_balance
-        trans_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         accounts.dump_account(acc_data)
         return acc_data
     else:
