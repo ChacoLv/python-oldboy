@@ -41,8 +41,9 @@ def withdraw(acc_data):
         withdraw_amount = input("Please input your withdraw amount,'b' to exit:")
         if withdraw_amount.isdigit() and int(withdraw_amount)> 0:
             withdraw_amount = float(withdraw_amount)
-            new_accout_data = transaction.make_transaction(trans_logger,account_data,withdraw_amount,'withdraw')
-            new_balance = new_accout_data['balance']
+            new_account_data = transaction.make_transaction(trans_logger,account_data,withdraw_amount,'withdraw')
+
+            new_balance = new_account_data['balance']
             interest = old_balance -new_balance - withdraw_amount
             if new_balance:
                 withdraw_info = '''

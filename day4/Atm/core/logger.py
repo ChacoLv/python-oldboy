@@ -14,6 +14,9 @@ def logger(*args):
 def trans_logger(acc_data,trans_type,amount,trans_time,*args):
     trans_id = acc_data['id']
     logger_file = "%s/logs/%s"%(settings.BASE_DIR,settings.LOG_TYPES['transaction'])
-    log_info = "%s,%s,%s,%s"%(trans_id,trans_type,amount,trans_time)
-    with open("logger_file",'a') as f:
-        json.dump(log_info,f)
+    if settings.TRANSACTION_TYPE[trans_type]['receipt']:            #如果有收款人的，则将收款人信息加入日志,args传入收款人账号
+        log_info = "%s,%s,%s,%s,%s\n"%(trans_id,trans_type,amount,trans_time,args)
+    else:
+        log_info = "%s,%s,%s,%s\n" % (trans_id, trans_type, amount, trans_time)
+    with open(logger_file,'a') as f:
+        f.write(log_info)

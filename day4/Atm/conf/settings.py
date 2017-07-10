@@ -18,8 +18,8 @@ LOG_TYPES = {
     'access':'access.log'
 }
 TRANSACTION_TYPE = {
-    'repay':{'action':'plus','interest':0},
-    'withdraw':{'action':'minus','interest':0.05},
-    'transfer':{'action':'minus','interest':0.05},
-    'consume':{'action':'minus','interest':0}
+    'repay':{'action':'plus','interest':0,'receipt':0},
+    'withdraw':{'action':'minus','interest':0.05,'receipt':0},
+    'transfer':{'action':'minus','interest':0.05,'receipt':1},
+    'consume':{'action':'minus','interest':0,'receipt':1}
 }

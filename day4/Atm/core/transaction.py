@@ -27,7 +27,6 @@ def make_transaction(trans_log,acc_data,amount,trans_type,**kwargs):
                 return
         acc_data['balance'] = new_balance
         trans_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        logger.trans_logger(acc_data,trans_type,amount,trans_time)
         accounts.dump_account(acc_data)
         return acc_data
     else:

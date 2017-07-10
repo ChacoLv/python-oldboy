@@ -39,5 +39,10 @@ c=32, tm_wday=6, tm_yday=190, tm_isdst=0)
 >>> time.strptime('2017-07-09 23:11:32',"%Y-%m-%d %H:%M:%S")    %Y 匹配2017,必须注意顺序
 time.struct_time(tm_year=2017, tm_mon=7, tm_mday=9, tm_hour=23, tm_min=11, tm_se
 c=32, tm_wday=6, tm_yday=190, tm_isdst=-1)
-'''
 
+time.ctime(x)   #将时间戳数据转换成特定格式
+>>> time.ctime(x)
+'Mon Jul 10 19:26:16 2017'
+>>> time.asctime(y) #将结构化数据转换成特定格式
+'Mon Jul 10 19:26:45 2017'
+'''
