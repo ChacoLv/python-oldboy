@@ -81,9 +81,21 @@ def transfer(acc_data):
             trans_amount = input("Please input transfer amount:")
             trans_amount = float(trans_amount)
             new_account_data = transaction.make_transaction(account_data,trans_amount, 'transfer')
+            new_balance = new_account_data['balance']
             logger.trans_logger(account_data, 'transfer', trans_amount,payee_id)
-            new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')
+            new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')         #收款人按着还款处理，即账号加钱
             logger.trans_logger(payee_data, 'repay', trans_amount)
+            interest = old_balance - new_balance - trans_amount
+            if new_balance:
+                transaction_info = '''
+                --- withdraw information ---
+                withdraw amount :%s
+                balance :%s
+                interest :%s
+                payee_id:%s
+                '''%(new_balance,trans_amount,interest,payee_id)
+                print(transaction_info)
+
         else:
             print("payee_id is invalid,retry!!!")
 
