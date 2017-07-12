@@ -20,6 +20,24 @@ user_data = {
     'account_data':None
 }
 
+def print_trans_info(trans_type,balance,amount,interest):
+    transaction_info = '''
+    --- %s information ---
+    balance :%s
+    %s amount :%s
+    interest :%s
+    ''' % (trans_type,balance,trans_type,amount, interest)
+    print(transaction_info)
+
+def print_balance_info(acc_data):
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    balance = account_data['balance']
+    current_balance = u'''-----balance information-----
+    credit : %s
+    balance:%s
+    '''%(account_data['credit'],balance)
+
+
 def account_info(acc_data):
     print(user_data)
 
@@ -32,10 +50,7 @@ def withdraw(acc_data):
     '''
     account_data = accounts.load_current_balance(acc_data['account_id'])
     old_balance = account_data['balance']
-    current_balance = u'''-----balance information-----
-    credit : %s
-    balance:%s
-    '''%(account_data['credit'],old_balance)
+    print_balance_info(acc_data)
     exit_flag = False
     while not exit_flag:
         withdraw_amount = input("Please input your withdraw amount,'b' to exit:")
@@ -46,13 +61,7 @@ def withdraw(acc_data):
             new_balance = new_account_data['balance']
             interest = old_balance -new_balance - withdraw_amount
             if new_balance:
-                withdraw_info = '''
-                --- withdraw information ---
-                withdraw amount :%s
-                balance :%s
-                interest :%s
-                '''%(new_balance,withdraw_amount,interest)
-                print(withdraw_info)
+                print_trans_info('withdraw', new_balance, withdraw_amount, interest)
         else:
             print("Invalid withdraw account,please re-type amount!")
 
@@ -68,41 +77,50 @@ def transfer(acc_data):
     '''
     account_data = accounts.load_current_balance(acc_data['account_id'])
     old_balance = account_data['balance']
-    current_balance = u'''-----balance information-----
-    credit : %s
-    balance:%s
-    '''%(account_data['credit'],old_balance)
+    print_balance_info(acc_data)
     exit_flag = False
     while not exit_flag:
-        payee_id = input("Please input payee account id:")
-        re_payee_id = input("Please input payee account id again:")
-        if payee_id == re_payee_id:
-            payee_data = accounts.load_current_balance(payee_id)
-            trans_amount = input("Please input transfer amount:")
-            trans_amount = float(trans_amount)
-            new_account_data = transaction.make_transaction(account_data,trans_amount, 'transfer')
-            new_balance = new_account_data['balance']
-            logger.trans_logger(account_data, 'transfer', trans_amount,payee_id)
-            new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')         #收款人按着还款处理，即账号加钱
-            logger.trans_logger(payee_data, 'repay', trans_amount)
-            interest = old_balance - new_balance - trans_amount
-            if new_balance:
-                transaction_info = '''
-                --- withdraw information ---
-                withdraw amount :%s
-                balance :%s
-                interest :%s
-                payee_id:%s
-                '''%(new_balance,trans_amount,interest,payee_id)
-                print(transaction_info)
-
+        payee_id = input("Please input payee account id,'b to exit':")
+        if payee_id == 'b':
+            exit_flag = True
+            continue
         else:
-            print("payee_id is invalid,retry!!!")
+            re_payee_id = input("Please input payee account id again:")
+            if payee_id == re_payee_id:
+                payee_data = accounts.load_current_balance(payee_id)
+                trans_amount = input("Please input transfer amount:")
+                trans_amount = float(trans_amount)
+                new_account_data = transaction.make_transaction(account_data,trans_amount, 'transfer')
+                new_balance = new_account_data['balance']
+                logger.trans_logger(account_data, 'transfer', trans_amount,payee_id)
+                new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')         #收款人按着还款处理，即账号加钱
+                logger.trans_logger(payee_data, 'repay', trans_amount)
+                interest = old_balance - new_balance - trans_amount
+                if new_balance:
+                    print_trans_info('transfer',new_balance,trans_amount,interest)
+            else:
+                print("payee_id is invalid,retry!!!")
 
 
-
+@login_required
 def repay(acc_data):
-    pass
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    old_balance = account_data['balance']
+    print_balance_info(acc_data)
+    exit_flag = False
+    while not exit_flag:
+        repay_amount = input("Please input your repay amount,'b' to exit:")
+        if repay_amount.isdigit() and int(repay_amount) > 0:
+            new_account_data = transaction.make_transaction(account_data,repay_amount,'repay')
+            logger.trans_logger(account_data,'repay',repay_amount)
+            new_balance = new_account_data['balance']
+            repay_amount = float(repay_amount)
+            interest = new_balance - old_balance - repay_amount
+            if new_balance:
+                print_trans_info('repay',new_balance,repay_amount,interest)
+        elif repay_amount == 'b':
+            exit_flag = True
+
 
 def account_bill(acc_data):
     pass
