@@ -21,6 +21,7 @@ user_data = {
 }
 
 def print_trans_info(trans_type,balance,amount,interest):
+    #打印交易信息
     transaction_info = '''
     --- %s information ---
     balance :%s
@@ -30,6 +31,7 @@ def print_trans_info(trans_type,balance,amount,interest):
     print(transaction_info)
 
 def print_balance_info(acc_data):
+    #打印账号余额信息
     account_data = accounts.load_current_balance(acc_data['account_id'])
     balance = account_data['balance']
     current_balance = u'''-----balance information-----
@@ -37,12 +39,42 @@ def print_balance_info(acc_data):
     balance:%s
     '''%(account_data['credit'],balance)
 
-
-def account_info(acc_data):
-    print(user_data)
-
+@login_required
 def query(acc_data):
-    pass
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    account_id = account_data['id']
+    balance = account_data['balance']
+    credit = account_data['credit']
+    expired_date = account_data['expire_date']
+    acc_info = '''
+    -----Account information-----
+    Card ID:%s
+    Credit:%s
+    Balance:%s
+    Expired Date:%s
+    '''%(account_id,credit,balance,expired_date)
+    print(acc_info)
+    start_date = input("Please input querying start date(%Y-%m-%d):")
+    start_date_timestamp = time.mktime(time.strptime("%s 0:0:0"%start_date,"%Y-%m-%d %H:%M:%S"))
+    end_date = input("Please input querying end date(%Y-%m-%sd):")
+    end_date_timestamp = time.mktime(time.strptime("%s 23:59:59"%end_date,"%Y-%m-%d %H:%M:%S"))
+    trans_log = logger.load_log("transactions",acc_data)
+    print('''
+    -----transaction information-----
+    strat date:%s
+    end date:%s
+    '''%(start_date,end_date))
+    print("\t%-10s%-15s%-10s%-12s%-22s%-10s"%("ID","Type","Amount","Interest","Date","Payee"))
+    for line in trans_log:
+        line_list = line.split(",")
+        trans_log_timestamp = time.mktime(time.strptime(line_list[4],"%Y-%m-%d %H:%M:%S"))
+        if start_date_timestamp <= trans_log_timestamp<= end_date_timestamp:
+            if len(line_list) == 5:
+                print("\t%-10s%-15s%-10s%-12s%-22s"%(line_list[0],line_list[1],line_list[2],line_list[3],line_list[4]))
+            else:
+                print("\t%-10s%-15s%-10s%-12s%-22s%-10s" % (line_list[0], line_list[1], line_list[2], line_list[3], line_list[4],line_list[5]))
+
+
 @login_required
 def withdraw(acc_data):
     '''
@@ -57,9 +89,11 @@ def withdraw(acc_data):
         if withdraw_amount.isdigit() and int(withdraw_amount)> 0:
             withdraw_amount = float(withdraw_amount)
             new_account_data = transaction.make_transaction(account_data,withdraw_amount,'withdraw')
-            logger.trans_logger(account_data,'withdraw',withdraw_amount)
             new_balance = new_account_data['balance']
             interest = old_balance -new_balance - withdraw_amount
+            interest = round(interest,2)
+            logger.trans_logger(account_data, 'withdraw', withdraw_amount,interest)
+            old_balance = new_balance
             if new_balance:
                 print_trans_info('withdraw', new_balance, withdraw_amount, interest)
         else:
@@ -92,15 +126,17 @@ def transfer(acc_data):
                 trans_amount = float(trans_amount)
                 new_account_data = transaction.make_transaction(account_data,trans_amount, 'transfer')
                 new_balance = new_account_data['balance']
-                logger.trans_logger(account_data, 'transfer', trans_amount,payee_id)
-                new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')         #收款人按着还款处理，即账号加钱
-                logger.trans_logger(payee_data, 'repay', trans_amount)
                 interest = old_balance - new_balance - trans_amount
+                interest = round(interest,2)
+                old_balance = new_balance
+                logger.trans_logger(account_data, 'transfer', trans_amount,interest,payee_id)
+                new_payee_data = transaction.make_transaction(payee_data,trans_amount, 'repay')         #收款人按着还款处理，即账号加钱
+                logger.trans_logger(payee_data, 'repay', trans_amount,0)
+
                 if new_balance:
                     print_trans_info('transfer',new_balance,trans_amount,interest)
             else:
                 print("payee_id is invalid,retry!!!")
-
 
 @login_required
 def repay(acc_data):
@@ -112,18 +148,37 @@ def repay(acc_data):
         repay_amount = input("Please input your repay amount,'b' to exit:")
         if repay_amount.isdigit() and int(repay_amount) > 0:
             new_account_data = transaction.make_transaction(account_data,repay_amount,'repay')
-            logger.trans_logger(account_data,'repay',repay_amount)
             new_balance = new_account_data['balance']
             repay_amount = float(repay_amount)
             interest = new_balance - old_balance - repay_amount
+            logger.trans_logger(account_data, 'repay',repay_amount,0)
             if new_balance:
-                print_trans_info('repay',new_balance,repay_amount,interest)
+                print_trans_info('repay',new_balance,repay_amount)
         elif repay_amount == 'b':
             exit_flag = True
 
-
 def account_bill(acc_data):
-    pass
+    account_data = accounts.load_current_balance(acc_data['account_id'])
+    trans_log = logger.load_log('transactions',acc_data)
+    total_payout = 0
+    total_payin = 0
+    interest = 0
+    print('-----transaction information-----')
+    for line in trans_log:
+        print(line)
+        line = line.split(",")
+        if line[1] != 'repay':
+            total_payout += float(line[2])
+        else:
+            total_payin += float(line[0])
+        interest += float(line[3])                                             #计算总的支出利息
+    print("\n-----Total information-----")
+    print("total_payout:%s"%total_payout)
+    print("total_interest:%s"%interest)
+    print("total_payin:%s"%total_payin)
+
+
+
 
 def logout(acc_data):
     pass

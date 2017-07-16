@@ -20,6 +20,7 @@ def load_current_balance(account_id):
     account_file = "%s/%s.json"%(db_path,account_id)
     with open(account_file,'r') as f:
         acc_data = json.load(f)
+
         return acc_data
 
 def dump_account(account_data):
