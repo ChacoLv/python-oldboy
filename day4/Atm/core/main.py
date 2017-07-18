@@ -41,6 +41,7 @@ def print_balance_info(acc_data):
 
 @login_required
 def query(acc_data):
+    #实现自定义时间范围查询交易记录功能
     account_data = accounts.load_current_balance(acc_data['account_id'])
     account_id = account_data['id']
     balance = account_data['balance']
@@ -58,21 +59,24 @@ def query(acc_data):
     start_date_timestamp = time.mktime(time.strptime("%s 0:0:0"%start_date,"%Y-%m-%d %H:%M:%S"))
     end_date = input("Please input querying end date(%Y-%m-%sd):")
     end_date_timestamp = time.mktime(time.strptime("%s 23:59:59"%end_date,"%Y-%m-%d %H:%M:%S"))
-    trans_log = logger.load_log("transactions",acc_data)
+    trans_log = logger.load_log("transactions",acc_data)    #交易记录提取
     print('''
     -----transaction information-----
     strat date:%s
     end date:%s
     '''%(start_date,end_date))
-    print("\t%-10s%-15s%-10s%-12s%-22s%-10s"%("ID","Type","Amount","Interest","Date","Payee"))
+    print("\t%-10s%-15s%-10s%-12s%-22s%-10s"%
+          ("ID","Type","Amount","Interest","Date","Payee"))
     for line in trans_log:
         line_list = line.split(",")
         trans_log_timestamp = time.mktime(time.strptime(line_list[4],"%Y-%m-%d %H:%M:%S"))
         if start_date_timestamp <= trans_log_timestamp<= end_date_timestamp:
             if len(line_list) == 5:
-                print("\t%-10s%-15s%-10s%-12s%-22s"%(line_list[0],line_list[1],line_list[2],line_list[3],line_list[4]))
+                print("\t%-10s%-15s%-10s%-12s%-22s"%
+                      (line_list[0],line_list[1],line_list[2],line_list[3],line_list[4]))
             else:
-                print("\t%-10s%-15s%-10s%-12s%-22s%-10s" % (line_list[0], line_list[1], line_list[2], line_list[3], line_list[4],line_list[5]))
+                print("\t%-10s%-15s%-10s%-12s%-22s%-10s" %
+                      (line_list[0], line_list[1], line_list[2], line_list[3], line_list[4],line_list[5]))
 
 
 @login_required
@@ -140,6 +144,7 @@ def transfer(acc_data):
 
 @login_required
 def repay(acc_data):
+    #还款，实现还款功能
     account_data = accounts.load_current_balance(acc_data['account_id'])
     old_balance = account_data['balance']
     print_balance_info(acc_data)
@@ -157,7 +162,9 @@ def repay(acc_data):
         elif repay_amount == 'b':
             exit_flag = True
 
+@login_required
 def account_bill(acc_data):
+    #查看账号所有交易记录信息
     account_data = accounts.load_current_balance(acc_data['account_id'])
     trans_log = logger.load_log('transactions',acc_data)
     total_payout = 0
@@ -181,7 +188,7 @@ def account_bill(acc_data):
 
 
 def logout(acc_data):
-    pass
+    return True
 
 
 def interactive(acc_data):
@@ -203,7 +210,6 @@ def interactive(acc_data):
     5. 账单
     6. 退出
     '''
-    print(menu)
     menu_dict = {
         '1':query,
         '2':withdraw,
@@ -215,11 +221,15 @@ def interactive(acc_data):
     exit_flag = False
 
     while not exit_flag:
+        print(menu)
         user_select = input(">>:").strip()
         if user_select in menu_dict.keys():
-            menu_dict[user_select](acc_data)
+            res = menu_dict[user_select](acc_data)
+            if res == True:
+                break
         else:
             print("Invalid input,Please retry")
+
 
 def run():
     acc_data = auth.acc_login(user_data,access_logger)
