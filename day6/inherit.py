@@ -19,8 +19,7 @@ class People(object):
     def talk(self):
         print("%s is talking"%self.name)
 
-class Relation(object):
-
+class Relation(object):     #新式类
     def make_friends(self,obj):
         print("%s is trying to make friends with %s"%(self.name,obj.name))
 
