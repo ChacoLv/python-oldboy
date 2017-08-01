@@ -65,6 +65,9 @@ class Student(SchoolMember):
 
 
 
+
+
+
 S1 = Student("LC",20,"M",1001,"Python")
 S1.tell()
 S1.pay_tuition(888)
