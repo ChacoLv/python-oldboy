@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # LC
 
-
+#类的继承和相互调用
 class School(object):
     def __init__(self,name,addr):
         self.name = name
@@ -74,9 +74,11 @@ T1 = Teacher("Jack",29,"M",2000,"Python")
 T1.tell()
 T1.teach()
 T2 = Teacher("Mark",23,"M",3000,"English")
-SC1 = School("浙大","杭州")
+SC1 = School("家里蹲","土坑")
 
 SC1.hire(T1)
+SC1.hire(T2)
+print(SC1.teachers[0].name)
 SC1.enroll(S1)
 
 
