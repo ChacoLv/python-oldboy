@@ -1,0 +1,16 @@
+[DEFAULT]
+serveraliveinterval = 45
+compression = yes
+compressionlevel = 9
+user = LC
+
+[bitbucket.org]
+user = LC
+
+[topsecret.server.com]
+host port = 80
+forwardx11 = no
+
+[XMMMMMM]
+server = 10.1.1.2
+
