@@ -21,7 +21,7 @@ if hasattr(d,choice):
     getattr(d,choice)()
 else:
     setattr(d,choice,bulk)          #设置对象中的choice属性，如可以新增一个变量或方法
-    getattr(d,choice)(d)
+    getattr(d,choice)(d)        #func = get(d,choice), func(d)
 d.talk(d)
 
 delattr(d,choice)               #删除对象中的choice属性，可以是变量，也可以是方法
