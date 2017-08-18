@@ -41,8 +41,3 @@ try:
     raise TestException('自定义异常')
 except TestException as e:
     print(e)
-
-
-
-
-

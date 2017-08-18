@@ -7,8 +7,8 @@ print(bool({}))             #判断整数是否为真，列表，元组，字典
 
 a = bytes("abcde",encoding="utf-8")     #字符串默认是不能够修改的
 b = bytearray("abcde",encoding="utf-8")     #将原有数据变化成一个列表，并且可以改变
-b[1] = 100                          #必须要赋值一个整型，为ASCII码表对应的数字
-print(b)
+b[1] = 100                          #改变列表中的值，但必须要赋值一个整型，为ASCII码表对应的数字，即d对应ASCII码中的100
+print("----",b)
 
 callable([])      #判断是否为可调用对象，函数，类都是可以调用的，即是否有()调用
 print(callable([]))
@@ -46,10 +46,10 @@ for i in res:
 res = [lambda i:i*2 for i in range(10)]
 #reduce
 import functools
-rese = functools.reduce(lambda x,y:x+y,range(5))       #表示x,y默认从0,1开始，x+y结果传递给x，y每次+1，并把结果给x
+rese = functools.reduce(lambda x,y:x+y,range(5))       #表示x,y默认从0,1开始，x+y结果传递给x，y每次+1，并把结果给x,(即列表中所有数字相加)
 print(rese)
 
-res = functools.reduce(lambda x,y:x*y,range(1,10))
+res = functools.reduce(lambda x,y:x*y,range(1,10))      #列表中所有数字相乘
 print('----',res)
 
 #frozeset
@@ -90,13 +90,14 @@ print(sorted(a.items(),key=lambda x:x[1]))      #按着字典value排序，使�
 a = (1,2,3,4,5,6,7)
 b = ('a','b','c','d','e','f')
 print(len(b))
-c = ('+' for i in range(len(b)))
+c = ('+' for i in range(len(b)))        #使用生成器生成一个元组
 print(c)
 for i in zip(a,b,c):
     print(i)
 
 #map                #将可迭代对象按着函数执行，即将可迭代对象的值传递给函数，并返回结果
 def hel(*args):
+
     return args
 for i in map(hel,a,b):
     print(i)

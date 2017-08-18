@@ -27,7 +27,7 @@ class Dog(object):
     def eat(self,food):             #修改属性方法的参数
         print("set food:",food)
         self.__food = food
-    @eat.deleter
+    @eat.deleter        #删除属性方法的参数
     def eat(self):
         del self.__food
         print("deleted!!!!!")
@@ -36,7 +36,6 @@ d = Dog("Mark")
 d.eat
 d.eat = "apple"         #向属性方法种传递参数
 d.eat
-
 del d.eat               #删除属性方法种的参数
 d.eat
 

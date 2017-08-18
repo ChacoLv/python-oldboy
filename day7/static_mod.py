@@ -15,7 +15,7 @@ d.eat("banana")
 class Dog(object):
     def __init__(self,name):
         self.name = name
-    @staticmethod
+    @staticmethod       #静态类后，则无法调用类变量和实例变量
     def eat(self):  #需要传进来的是实例了，而不能调用类本身的属性
         print("%s is eating %s"%(self.name,"banana"))
 

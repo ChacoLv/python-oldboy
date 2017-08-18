@@ -81,7 +81,3 @@ class Foo(object):
 f = Foo("Jack")
 print(type(f))
 print(type(Foo))
-
-
-
-

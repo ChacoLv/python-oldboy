@@ -36,16 +36,16 @@ import sys
 # print(sys.argv[1])      #可以处理传递的参数
 # F:\python\oldboy\day5>python os_module.py 1 2 3
 # 1
-
+#
 # sys.argv
 # F:\python\oldboy\day5>python os_module.py 1 2 3      #1,2,3是参数
 # ['os_module.py', '1', '2', '3']
 # import time
 # for i in range(100):
 #     time.sleep(0.1)
-#     sys.stdout.flush()
-#     sys.stdout.write('!')
+#     sys.stdout.flush()          #在控制台输出，flush是立刻输出
+#     sys.stdout.write('!')       #write是输出内容
 
 # print(sys.path)
 # print(sys.platform)
-# sys.version
+print(sys.version)              #输出python版本信息

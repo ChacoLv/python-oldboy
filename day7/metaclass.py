@@ -3,11 +3,11 @@
 
 class MyType(type):
     def __init__(self,*args,**kwargs):
-        print("Mytype init",*args,**kwargs)
+        print("Mytype init",args,kwargs)
     def __call__(self, *args, **kwargs):
-        print("Mytype call",*args,**kwargs)
+        print("Mytype call",args,kwargs)
         obj = self.__new__(self)
-        self.__init__(obj,*args,**kwargs)
+        self.__init__(obj,args,kwargs)
 
 
 
@@ -23,5 +23,8 @@ f = Foo()
 #在python2或者3中，执行顺序为：__new__ ,  __init__,  __call__、
 #__new__优于__init__执行
 #__call__用于创建__new__
+
+from class_mod import Dog
+d = Dog("alex")
 
 

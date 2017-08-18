@@ -7,7 +7,7 @@ import os
 # 导入包的本质是运行包中的__init__文件
 
 #导入模块中某个函数或者变量
-from test import hello      #将test模块中的hello函数导入，在本模块中可以直接调用，也可以通过as来另起名字
+#from test import hello      #将test模块中的hello函数导入，在本模块中可以直接调用，也可以通过as来另起名字
 
 #模块的分类
 # 1. 标准库
@@ -19,10 +19,11 @@ import time
 #时间戳
 x = time.time()
 time.gmtime()   #将时间戳转换成UTC时间元组
-time.localtime()    #将时间戳转换成本地时区的时间元组
-
+y = time.localtime()    #将时间戳转换成本地时区的时间元组
+print(y)
 #结构化数据，为元组的形式
-y = time.mktime(x)       #将结构化数据转换成时间戳
+y = time.mktime(y)       #将结构化数据转换成时间戳
+print(y)
 
 #格式化数据
 z = time.strftime("%Y-%m-%d %H:%M:%S",y) #将结构化数据转换成格式化数据
@@ -46,9 +47,16 @@ z = time.strftime("%Y-%m-%d %H:%M:%S",y) #将结构化数据转换成格式化�
 # >>> time.asctime(y) #将结构化数据转换成特定格式
 # 'Mon Jul 10 19:26:45 2017'
 
-
-
-
+import datetime
+print(datetime.datetime.now()) #返回 2016-08-19 12:47:03.941925
+print(datetime.date.fromtimestamp(time.time()) )  # 时间戳直接转成日期格式 2016-08-19
+print(datetime.datetime.now() )
+print(datetime.datetime.now() + datetime.timedelta(3)) #当前时间+3天
+print(datetime.datetime.now() + datetime.timedelta(-3)) #当前时间-3天
+print(datetime.datetime.now() + datetime.timedelta(hours=3)) #当前时间+3小时
+print(datetime.datetime.now() + datetime.timedelta(minutes=30)) #当前时间+30分
+c_time  = datetime.datetime.now()
+print(c_time.replace(minute=3,hour=2)) #时间替换
 
 
 

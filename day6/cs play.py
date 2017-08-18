@@ -55,11 +55,3 @@ r2.test_list.append("from r2")
 
 
 print(r1.name,r1.number)
-
-
-
-
-
-
-
-
