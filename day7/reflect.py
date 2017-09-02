@@ -26,5 +26,5 @@ d.talk(d)
 
 delattr(d,choice)               #删除对象中的choice属性，可以是变量，也可以是方法
 d.talk(d)
-
+ 
 

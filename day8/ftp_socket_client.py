@@ -1,25 +1,34 @@
-import socket
+import socket,hashlib
 client = socket.socket()
 client.connect(("localhost",9998))
 
 
 while True:
-    data_size = 0
-    data = ""
+    recv_size = 0
     cmd = input(">>:").strip()
     if len(cmd) == 0: continue
-    client.send(cmd.encode("utf-8"))
-    data_len = client.recv(1024).decode()
-    client.send("准备好了，可以发包了".encode("utf-8"))
-    print("server send len is :%s"%(data_len))
-    while data_size<int(data_len):
+    if cmd.startswith("get"):
+        m = hashlib.md5()
+        filename = cmd.split()[1]
+        client.send(cmd.encode())
+        file_size = int(client.recv(1024).decode()) #接收服务器端发送过来端文件大小，用于判断
+        client.send(b"begin to receive ! ")         #确认可以服务器端可以发送数据，防止粘包
+        f = open(filename + ".new", "wb")           #创建文件，并以二进制方式写入
+        while recv_size < file_size:
+            if file_size - recv_size > 1024:        #在循环汇中将文件传输完成，防止粘包
+                size = 1024
+            else:
+                size = file_size - recv_size
+            data_recv = client.recv(size)           #开始收集文件内容
+            recv_size += len(data_recv)
+            m.update(data_recv)                     #对每次接收的数据进行hash
+            f.write(data_recv)                      #将接收数据写入文件
+            print(recv_size,file_size)
+        else:
+            print("data receive over ! ")
+            print("receive file md5:",m.hexdigest())
+            recv_file_md5 = m.hexdigest()           #对接收的数据的哈希结果按着16进制表达
+            server_send_md5 = client.recv(1024)     #服务器端发送的哈希值
+            print("server send md5:",server_send_md5)
 
-        data_recv = client.recv(1024)
-        data_size += len(data_recv.decode())
-        data += data_recv.decode()
-    print("client received size is %s"%(data_size))
-
-
-
-
-    print("received data",data)
+            f.close()

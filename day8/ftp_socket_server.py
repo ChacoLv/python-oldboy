@@ -1,4 +1,4 @@
-import socket,os,time
+import socket,os,hashlib
 
 server = socket.socket()
 server.bind(("localhost",9998))
@@ -6,17 +6,20 @@ server.listen()
 
 while True:
     conn,addr = server.accept()
-    print("client:%s is connecting",conn)
+    print("client:%s is connected",conn)
     while True:
-        data = conn.recv(1024)
-        print(type(data))
-        if not data:
-            print("client is disconnected ! ! !")
-            break
-        cmd_res = os.popen(data.decode()).read()
-        data_len = len(cmd_res)
-        print("server send size is %s"%(data_len))
-        conn.send(str(data_len).encode("utf-8"))
-        client_ack = conn.recv(1024).decode()
-        conn.send(cmd_res.encode("utf-8"))
-
+        m = hashlib.md5()
+        cmd = conn.recv(1024)
+        filename = cmd.decode().split()[1]  #获取需要传的文件名
+        if os.path.isfile(filename):        #判断要传输的文件的大小
+            f = open(filename,"rb")
+            file_size = os.stat(filename).st_size
+            conn.send(str(file_size).encode())  #发送要发送的文件大小
+            conn.recv(1024)
+            for line in f:
+                m.update(line)              #发送文件，每次发送进行hash
+                conn.send(line)
+            f.close()
+            print("file is send over ! ")
+            print("file md5 is:",m.hexdigest())
+            conn.send(m.hexdigest().encode())
