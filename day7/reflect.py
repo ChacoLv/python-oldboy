@@ -7,6 +7,8 @@ class Dog(object):
     def eat(self):
         print("%s is eating"%self.name)
 
+    dog1 = "hell"
+
 def bulk(self):
     print("%s is yelling"%self.name)
 
@@ -14,7 +16,7 @@ def bulk(self):
 d = Dog("Jack")
 
 choice = input(">>:").strip()
-print(hasattr(d,choice))            #表示对象中是否含有choice的属性，包含变量，方法等
+print("----",hasattr(d,choice))            #表示对象中是否含有choice的属性，包含变量，方法等
 
 if hasattr(d,choice):
     print(getattr(d,choice))        #获取对象中的choice属性，如果是变量，则获取变量值，如果是方法，可以通过加()进行执行

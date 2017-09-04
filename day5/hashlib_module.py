@@ -16,10 +16,18 @@ import hashlib
 # m3 = hashlib.sha3_224()
 # m3.update(b"what is that")
 # print(m3.hexdigest())
+username1 = "nihao"
+username2 = 'nihao'
+m1 = hashlib.md5(username1.encode())
+print(m1.hexdigest())
 
-import hmac
-h = hmac.new("你离得".encode(encoding='utf-8'),'加密的消息'.encode(encoding='utf-8'))  #中文需要编解码转换
-h2 = hmac.new(b'it is key',b'this is message')
+m2 = hashlib.md5(username2.encode())
+print(m2.hexdigest())
 
-print(h.hexdigest())
-print(h2.hexdigest())
+
+# import hmac
+# h = hmac.new("你离得".encode(encoding='utf-8'),'加密的消息'.encode(encoding='utf-8'))  #中文需要编解码转换
+# h2 = hmac.new(b'it is key',b'this is message')
+#
+# print(h.hexdigest())
+# print(h2.hexdigest())
