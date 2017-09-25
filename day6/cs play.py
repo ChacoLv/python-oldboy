@@ -39,6 +39,8 @@ r1 = Role("LC","Terrorist","AK47")          #实例化，生成一个角色，�
 r1.shot()
 r1.buy_gun("M4A1")
 r2 = Role("xm","good guy","m4a1")
+
+
 #实例变量优先于类变量
 
 r1.bullet_prove = True      #可新增实例变量

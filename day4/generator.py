@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 # LC
+'''
 # 列表生成式
 def func(x):
     print(x)
@@ -19,6 +20,7 @@ for i in b:
 #1.只有在调用的时候，才会生成相应的数据
 #2.只记录当前的位置
 #3.只有一个__next()__方法
+'''
 
 #fibnacci函数
 #函数生成器，使用yield,用了yield的函数，就不在是一个函数，而是一个生成器
@@ -28,10 +30,10 @@ def fib(max):
         n += 1
         yield b                 #yield是会返回当前值给函数，执行一次,__next__方法会调用yeild值
         a,b = b,a+b
-    return "---done---"
+    return "---done---..."
 from collections import Iterator
 
-f = fib(1)
+f = fib(9)
 print("-------",isinstance(f,Iterator))
 while True:
     try:
@@ -41,7 +43,7 @@ while True:
         print("Generator is stop,value is ",e.value)
         break
 #send 会唤醒当前生成器，并传递一个值给yeild
-
+'''
 def consumer(name):
     print("%s 准备开始吃包子了"%name)
     while True:
@@ -58,6 +60,7 @@ def producer(name):
         print("包子[%s]好了，分成两份"%i)
         c1.send(i)
         c2.send(i)
+        
 
 producer("lvcheng")
 
@@ -79,4 +82,5 @@ from collections import Iterator
 print(isinstance((x for x in range(10)),Iterator))      #True
 print(isinstance([],Iterator))          #False
 print(isinstance(iter([]),Iterator))        #True
+'''
 
